@@ -46,7 +46,7 @@ protected:
     };
 public:
     StreamHandler(int a_fd, bool own_fd = true) : FdHandler(a_fd, own_fd){}
-    int HandleError();
+    virtual int HandleError();
 };
 
 class TcpSocket : public StreamHandler{
@@ -79,12 +79,12 @@ class AcceptSocketHandler : public FdHandler{
 private:
     virtual int HandleWrite();
 protected:
-    enum{defualt_queue_len = 3};
+    enum{def_q_len = 3};
     TcpSocket *NewHandler;
     int accept_queue_len;
 public:
    AcceptSocketHandler(int a_fd, bool own_fd = true, 
-       int queue_len = defualt_queue_len) : FdHandler(a_fd, own_fd), 
+       int queue_len = def_q_len) : FdHandler(a_fd, own_fd), 
        NewHandler(0), accept_queue_len(queue_len){}
    virtual int HandleRead();
    virtual int HandleError();
@@ -101,7 +101,6 @@ public:
         : StreamHandler(a_fd, own_fd), rbuff(buffer_size){}; 
     virtual ~RStreamHandler(){}
     virtual int HandleRead();
-    virtual int HandleError();
 };
 
 class WStreamHandler : public StreamHandler{
